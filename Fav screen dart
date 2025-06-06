@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/favorites_provider.dart';
+import '../data/sites_data.dart';
+import 'site_screen.dart';
+
+class FavoritesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final favoriteSites = builtInSites.where((site) => favoritesProvider.isFavorite(site.id)).toList();
+
+    if (favoriteSites.isEmpty) {
+      return Center(child: Text('No favorites added yet.'));
+    }
+
+    return ListView.builder(
+      itemCount: favoriteSites.length,
+      itemBuilder: (ctx, index) {
+        final site = favoriteSites[index];
+        return ListTile(
+          leading: Image.asset(site.logoAsset, width: 50, height: 50, fit: BoxFit.contain),
+          title: Text(site.title),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => SiteScreen(site: site)),
+            );
+          },
+        );
+      },
+    );
+  }
+}
