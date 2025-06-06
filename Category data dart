@@ -1,0 +1,7 @@
+import '../models/category.dart';
+
+final List<Category> categories = [
+  Category(id: 'anime', title: 'Anime'),
+  Category(id: 'movies', title: 'Movies'),
+  Category(id: 'dramas', title: 'Dramas'),
+];
