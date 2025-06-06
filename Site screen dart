@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../models/site.dart';
+import '../providers/favorites_provider.dart';
+import '../providers/recently_watched_provider.dart';
+
+class SiteScreen extends StatelessWidget {
+  final Site site;
+
+  SiteScreen({required this.site});
+
+  @override
+  Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final recentlyWatchedProvider = Provider.of<RecentlyWatchedProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(site.title),
+        actions: [
+          IconButton(
+            icon: Icon(
+              favoritesProvider.isFavorite(site.id) ? Icons.favorite : Icons.favorite_border,
+              color: Colors.redAccent,
+            ),
+            onPressed: () {
+              favoritesProvider.toggleFavorite(site.id);
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            final url = Uri.parse(site.url);
+            if (await canLaunchUrl(url)) {
+              await launchUrl(url);
+              recentlyWatchedProvider.addRecentlyWatched(site.id, site.url);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Could not launch site')),
+              );
+            }
+          },
+          child: Text('Open ${site.title}'),
+        ),
+      ),
+    );
+  }
+}
