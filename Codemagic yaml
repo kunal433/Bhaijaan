@@ -1,0 +1,25 @@
+workflows:
+  build-release-apk:
+    name: Build Release APK
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Analyze code (optional but recommended)
+        script: flutter analyze
+      - name: Run tests (optional, remove if none)
+        script: flutter test
+      - name: Build APK release
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+    publishing:
+      # Disable automatic publishing to focus on manual download
+      # You can configure publishing later if needed
+      email:
+        enabled: false
+      google_play:
+        enabled: false
