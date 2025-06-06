@@ -1,0 +1,35 @@
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class FavoritesProvider with ChangeNotifier {
+  List<String> _favoriteSiteIds = [];
+
+  List<String> get favoriteSiteIds => _favoriteSiteIds;
+
+  FavoritesProvider() {
+    loadFavorites();
+  }
+
+  Future<void> loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    _favoriteSiteIds = prefs.getStringList('favoriteSiteIds') ?? [];
+    notifyListeners();
+  }
+
+  Future<void> toggleFavorite(String siteId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (_favoriteSiteIds.contains(siteId)) {
+      _favoriteSiteIds.remove(siteId);
+    } else {
+      _favoriteSiteIds.add(siteId);
+    }
+
+    await prefs.setStringList('favoriteSiteIds', _favoriteSiteIds);
+    notifyListeners();
+  }
+
+  bool isFavorite(String siteId) {
+    return _favoriteSiteIds.contains(siteId);
+  }
+}
