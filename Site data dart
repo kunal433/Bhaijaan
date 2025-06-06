@@ -1,0 +1,46 @@
+import '../models/site.dart';
+
+final List<Site> builtInSites = [
+  Site(
+    id: 'soap2day',
+    title: 'Soap2Day',
+    url: 'https://soap2day.to',
+    logoAsset: 'assets/images/soap2day.png',
+    categories: ['movies', 'dramas'],
+  ),
+  Site(
+    id: 'kisskh',
+    title: 'KissKH',
+    url: 'https://kisskh.co',
+    logoAsset: 'assets/images/kisskh.png',
+    categories: ['anime', 'dramas'],
+  ),
+  Site(
+    id: 'aniwatch',
+    title: 'AniWatch',
+    url: 'https://aniwatch.to',
+    logoAsset: 'assets/images/aniwatch.png',
+    categories: ['anime'],
+  ),
+  Site(
+    id: 'vegamovies',
+    title: 'VegaMovies',
+    url: 'https://vegamovies.net',
+    logoAsset: 'assets/images/vegamovies.png',
+    categories: ['movies', 'anime'],
+  ),
+  Site(
+    id: 'fmovies',
+    title: 'FMovies',
+    url: 'https://fmovies.to',
+    logoAsset: 'assets/images/fmovies.png',
+    categories: ['movies', 'dramas'],
+  ),
+  Site(
+    id: 'lookmovie',
+    title: 'LookMovie',
+    url: 'https://lookmovie.io',
+    logoAsset: 'assets/images/lookmovie.png',
+    categories: ['movies', 'dramas'],
+  ),
+];
