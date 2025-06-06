@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class AddSiteScreen extends StatefulWidget {
+  @override
+  _AddSiteScreenState createState() => _AddSiteScreenState();
+}
+
+class _AddSiteScreenState extends State<AddSiteScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _urlController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _urlController.dispose();
+    super.dispose();
+  }
+
+  void _openSite() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final urlText = _urlController.text.trim();
+    final url = Uri.tryParse(urlText);
+
+    if (url == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid URL')),
+      );
+      return;
+    }
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not open URL')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(24),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            Text('Add Custom Streaming Site', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _titleController,
+              decoration: InputDecoration(labelText: 'Site Title'),
+              validator: (val) => val == null || val.isEmpty ? 'Enter a title' : null,
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: _urlController,
+              decoration: InputDecoration(labelText: 'Site URL'),
+              validator: (val) => val == null || val.isEmpty ? 'Enter a URL' : null,
+              keyboardType: TextInputType.url,
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: _openSite,
+              child: Text('Open Site'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
