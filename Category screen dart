@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+
+import '../models/category.dart';
+import '../data/sites_data.dart';
+import '../screens/site_screen.dart';
+
+class CategoryScreen extends StatelessWidget {
+  final Category category;
+
+  CategoryScreen({required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredSites = builtInSites.where((site) => site.categories.contains(category.id)).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${category.title} Sites'),
+      ),
+      body: ListView.builder(
+        itemCount: filteredSites.length,
+        itemBuilder: (ctx, index) {
+          final site = filteredSites[index];
+          return ListTile(
+            leading: Image.asset(site.logoAsset, width: 50, height: 50, fit: BoxFit.contain),
+            title: Text(site.title),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SiteScreen(site: site),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
