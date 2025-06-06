@@ -1,0 +1,15 @@
+class Site {
+  final String id;
+  final String title;
+  final String url;
+  final String logoAsset;
+  final List<String> categories;
+
+  Site({
+    required this.id,
+    required this.title,
+    required this.url,
+    required this.logoAsset,
+    required this.categories,
+  });
+}
